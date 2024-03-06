@@ -25,6 +25,18 @@ namespace CVBackend.Controllers
             return Ok(personalInfos);
         }
 
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PersonalInfo>> GetPersonalInfoById(int id)
+        {
+            var personalInfo = await _personalInfoRepository.GetByIdAsync(id);
+            if (personalInfo == null)
+            {
+                return NotFound($"Personal info with ID {id} not found.");
+            }
+            return Ok(personalInfo);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddPersonalInfo(PersonalInfoDto personalInfoDto)
         {

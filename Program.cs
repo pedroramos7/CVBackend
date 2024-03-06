@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen(c =>
 // Register your repository for dependency injection
 builder.Services.AddScoped<PersonalInfoRepository>();
 builder.Services.AddScoped<AboutmeRepository>();
+builder.Services.AddScoped<WorkExperienceRepository>();
 
 // Assuming you have configuration settings like connection strings in your appsettings.json
 // You might want to inject IConfiguration to access these settings in your repository

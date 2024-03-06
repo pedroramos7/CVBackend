@@ -48,7 +48,56 @@ namespace CVBackend.Controllers
                 return BadRequest("Data could not be added.");
             }
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePersonalInfo(int id, PersonalInfoDto personalInfoDto)
+        {
+            var personalInfoToUpdate = await _personalInfoRepository.GetByIdAsync(id);
+            if (personalInfoToUpdate == null)
+            {
+                return NotFound($"Personal info with ID {id} not found.");
+            }
 
-        // Additional methods (POST, PUT, DELETE) to manipulate the personal info can be added here
+            // Update the entity based on the DTO
+            personalInfoToUpdate.Name = personalInfoDto.Name;
+            personalInfoToUpdate.JobTitle = personalInfoDto.JobTitle;
+            personalInfoToUpdate.Email = personalInfoDto.Email;
+            personalInfoToUpdate.ContactNumber = personalInfoDto.ContactNumber;
+            personalInfoToUpdate.LinkedInLink = personalInfoDto.LinkedInLink;
+            personalInfoToUpdate.Address = personalInfoDto.Address;
+
+            bool result = await _personalInfoRepository.UpdatePersonalInfoAsync(personalInfoToUpdate);
+            if (result)
+            {
+                return Ok(new { Message = "Personal information updated successfully.", UpdatedPersonalInfo = personalInfoToUpdate });
+ 
+            }
+            else
+            {
+                return BadRequest("Update failed.");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePersonalInfo(int id)
+        {
+            var personalInfoToDelete = await _personalInfoRepository.GetByIdAsync(id);
+            if (personalInfoToDelete == null)
+            {
+                return NotFound($"Personal info with ID {id} not found.");
+            }
+
+            var result = await _personalInfoRepository.DeletePersonalInfoAsync(id);
+            if(result)
+            {
+                return Ok(new {Message = $"ID {id} Personal information was deleted successfuly"});
+            }
+            else
+            {
+                return BadRequest("Delete operation failed");
+            }
+
+
+        }
+
     }
 }

@@ -47,6 +47,54 @@ namespace CVBackend.Repositories
             }
         }
 
-        // Implement other methods using Dapper here
+        
+        public async Task<PersonalInfo> GetByIdAsync(int id)
+        {
+            var sql = "SELECT * FROM PersonalInfo WHERE Id = @Id";
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            {
+                var result = await connection.QuerySingleOrDefaultAsync<PersonalInfo>(sql, new { Id = id });
+                return result;
+            }
+        }
+
+        public async Task<bool> UpdatePersonalInfoAsync(PersonalInfo personalInfo)
+        {
+            var sql = @"UPDATE PersonalInfo SET 
+                        Name = @Name, 
+                        JobTitle = @JobTitle, 
+                        Email = @Email, 
+                        ContactNumber = @ContactNumber, 
+                        LinkedInLink = @LinkedInLink, 
+                        Address = @Address 
+                        WHERE Id = @Id";
+
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            {
+                var affectedRows = await connection.ExecuteAsync(sql, new
+                {
+                    personalInfo.Name,
+                    personalInfo.JobTitle,
+                    personalInfo.Email,
+                    personalInfo.ContactNumber,
+                    personalInfo.LinkedInLink,
+                    personalInfo.Address,
+                    personalInfo.Id
+                });
+
+                return affectedRows > 0;
+            }
+        }
+
+        public async Task<bool> DeletePersonalInfoAsync(int id)
+        {
+            var sql = "DELETE FROM PersonalInfo WHERE Id = @Id";
+
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            {
+                var affectedRows = await connection.ExecuteAsync(sql, new { Id = id });
+                return affectedRows > 0;
+            }
+        }
     }
 }

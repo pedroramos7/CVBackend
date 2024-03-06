@@ -71,3 +71,4 @@
 /Users/pedroramos/Documents/projects/CV - Backend/CVBackend/obj/Debug/net8.0/CV-Backend.csproj.Up2Date
 /Users/pedroramos/Documents/projects/CV - Backend/CVBackend/obj/Debug/net8.0/CV-Backend.genruntimeconfig.cache
 /Users/pedroramos/Documents/projects/CV - Backend/CVBackend/obj/Debug/net8.0/ref/CV-Backend.dll
+/Users/pedroramos/Documents/projects/CV - Backend/CVBackend/obj/Debug/net8.0/CV-Backend.sourcelink.json

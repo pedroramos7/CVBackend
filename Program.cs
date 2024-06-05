@@ -18,19 +18,17 @@ builder.Services.AddScoped<AboutmeRepository>();
 builder.Services.AddScoped<WorkExperienceRepository>();
 builder.Services.AddScoped<CvRepository>();
 
-// Assuming you have configuration settings like connection strings in your appsettings.json
-// You might want to inject IConfiguration to access these settings in your repository
-// This is done automatically by ASP.NET Core's dependency injection
+// Add configuration settings
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 // Configure CORS to allow requests from the frontend
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
-        builder => builder.WithOrigins("http://localhost:3000")
+        builder => builder.WithOrigins("http://localhost:3000", "https://localhost:3000")
                           .AllowAnyMethod()
                           .AllowAnyHeader());
 });
-
 
 var app = builder.Build();
 
@@ -45,5 +43,9 @@ app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");  // Use the CORS policy
 app.UseAuthorization();
 app.MapControllers();
-app.Run();
 
+// Bind to the port provided by Vercel
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+app.Urls.Add($"http://*:{port}");
+
+app.Run();
